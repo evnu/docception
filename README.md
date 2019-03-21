@@ -48,3 +48,19 @@ The following example works:
 * [ ] Check if this also works when a doctest refers to dependencies of the project
 * [ ] Document how to use it with an alias in order to simplify running it in CI
 * [ ] Check if anybody is actually interested in this
+
+## How..?
+
+Docception's approach is pretty simple:
+
+1. Read in a markdown file
+1. Escape `"""`
+1. Wrap it into a module and place the files content into a `@moduledoc`
+1. Run it through `Code.compile_string/1`
+1. Store the resulting `.beam` in the filesystem to make `Code.fetch_docs/1` work
+1. Call into the undocumented-and-totally-not-for-public-use `ExUnit.DocTest.__doctests__/1`
+   function
+1. For each of the quoted doctests, spawn a process and call let it run the quoted doctest
+1. Gather the results and raise on error
+
+So, except for calling into `__doctests__/1`, this is pretty straight forward.
