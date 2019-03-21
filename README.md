@@ -39,3 +39,11 @@ The following example works:
     iex> :hello
     :hello
 
+## TODOs
+
+* [ ] Clean up temporary directory where `.beam` files are stored
+* [ ] Do not hard-code the temporary directory
+* [ ] Fix "wrong indent" warnings for heredocs
+* [ ] Check if this also works when a doctest refers to dependencies of the project
+* [ ] Document how to use it with an alias in order to simplify running it in CI
+* [ ] Check if anybody is actually interested in this
