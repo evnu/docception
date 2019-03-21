@@ -14,6 +14,8 @@ defmodule Mix.Tasks.Docception do
 
   @tmp_dir "/tmp/docception"
 
+  alias ExUnit.DocTest
+
   def run(files) do
     if Enum.empty?(files) do
       Mix.raise("Docception: No files to check")
@@ -66,45 +68,45 @@ defmodule Mix.Tasks.Docception do
 
   defp docception(files_as_beams) do
     ExUnit.start()
-    alias ExUnit.DocTest
 
     File.mkdir(@tmp_dir)
     @tmp_dir |> String.to_charlist() |> :code.add_patha()
 
-    results =
-      Enum.flat_map(files_as_beams, fn {module, byte_code} ->
-        # Note that the .beam extension is added by :code.load_abs/1
-        # See https://stackoverflow.com/a/42512734; we need to write a file to retrieve the
-        # docs.
-        tmp_beam = Path.join(@tmp_dir, Atom.to_string(module) <> ".beam")
+    results = Enum.flat_map(files_as_beams, &eval_module/1)
 
-        File.write!(tmp_beam, byte_code)
-        # Ensure that we start with a clean state
-        :code.purge(module)
-
-        module
-        |> DocTest.__doctests__([])
-        |> Enum.map(fn {_name, test} ->
-          # Spawn a process and wait for it to die.
-          pid =
-            spawn(fn ->
-              Code.compile_quoted(test)
-            end)
-
-          ref = Process.monitor(pid)
-
-          receive do
-            {:DOWN, ^ref, :process, ^pid, reason} ->
-              case reason do
-                :normal -> :ok
-                _ -> :unnormal
-              end
-          end
-        end)
-      end)
-
-    if Enum.any?(results, & &1 != :normal) do
+    if Enum.any?(results, &(&1 != :normal)) do
       Mix.raise("Docception: Failed tests found")
     end
+  end
+
+  defp eval_module({module, byte_code}) do
+    # Note that the .beam extension is added by :code.load_abs/1
+    # See https://stackoverflow.com/a/42512734; we need to write a file to retrieve the
+    # docs.
+    tmp_beam = Path.join(@tmp_dir, Atom.to_string(module) <> ".beam")
+
+    File.write!(tmp_beam, byte_code)
+    # Ensure that we start with a clean state
+    :code.purge(module)
+
+    module
+    |> DocTest.__doctests__([])
+    |> Enum.map(fn {_name, test} ->
+      # Spawn a process and wait for it to die.
+      pid =
+        spawn(fn ->
+          Code.compile_quoted(test)
+        end)
+
+      ref = Process.monitor(pid)
+
+      receive do
+        {:DOWN, ^ref, :process, ^pid, reason} ->
+          case reason do
+            :normal -> :ok
+            _ -> :unnormal
+          end
+      end
+    end)
   end
 end
