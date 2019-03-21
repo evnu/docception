@@ -2,19 +2,40 @@
 
 Run doctests on arbitrary markdown files.
 
-## Installation
+## Usage
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `docception` to your list of dependencies in `mix.exs`:
+    $ mix docception files
 
-```elixir
-def deps do
-  [
-    {:docception, "~> 0.1.0"}
-  ]
-end
+## Disclaimer
+
+This tool executes any Elixir doctest it encounters (think `eval`). Ensure that it does not
+encounter any harmful code!
+
+## Line numbers
+
+Docception needs to wrap the markdown file in `defmodule` to make this work. Hence, the line
+numbers in reported errors are slightly larger than the actual line.
+
+## Example
+
+This file can also be checked with docception. The following example is run through doctest and
+results in an error:
+
+    iex> :hello
+    :crash
+
+```
+$ mix docception README.md
+** (ExUnit.AssertionError)
+
+Doctest failed
+code:  :hello === :crash
+left:  :hello
+right: :crash
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/docception](https://hexdocs.pm/docception).
+The following example works:
+
+    iex> :hello
+    :hello
+
