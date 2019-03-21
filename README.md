@@ -44,6 +44,7 @@ The following example works:
 * [ ] Clean up temporary directory where `.beam` files are stored
 * [ ] Do not hard-code the temporary directory
 * [ ] Fix "wrong indent" warnings for heredocs
+* [ ] Try to fix wrong line number reports (the offset is always the same!)
 * [ ] Check if this also works when a doctest refers to dependencies of the project
 * [ ] Document how to use it with an alias in order to simplify running it in CI
 * [ ] Check if anybody is actually interested in this
