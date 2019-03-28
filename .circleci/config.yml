@@ -17,6 +17,25 @@ jobs:
             - _build
             - deps
             - ~/.mix
+  test:
+    docker:
+      - image: circleci/elixir:1.8
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+      - restore_cache:
+          keys:
+            - docception
+      - run: mix deps.get
+      - run: mix test
+      - run: mix docception README.md
+      - save_cache:
+          key: docception
+          paths:
+            - _build
+            - deps
+            - ~/.mix
   credo:
     docker:
       - image: circleci/elixir:1.8
@@ -50,6 +69,7 @@ workflows:
   verify:
     jobs:
       - build
+      - test
       - credo:
           requires:
             - build
