@@ -54,7 +54,7 @@ jobs:
           keys:
             - docception-{{ checksum "mix.lock" }}
             - v1-plt-cache-{{ checksum "mix.lock" }}
-      - run: mix dialyzer
+      - run: mix dialyzer --halt-exit-status
       - save_cache:
           key: v1-plt-cache-{{ checksum "mix.lock" }}
           paths:
