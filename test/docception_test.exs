@@ -1,6 +1,8 @@
 defmodule DocceptionTest do
   use ExUnit.Case
 
+  import ExUnit.CaptureIO
+
   test "raises if no files present" do
     assert_raise Docception.Error, fn ->
       Docception.run([])
@@ -26,13 +28,27 @@ defmodule DocceptionTest do
     end
   end
 
+  test "does not fail on correct test" do
+    file_as_beam = succeeding_test_file() |> Docception.stream_as_beam("testfile")
+
+    assert :ok == Docception.docception([file_as_beam])
+  end
+
+  test "finds a failing test" do
+    file_as_beam = failing_test_file() |> Docception.stream_as_beam("testfile")
+
+    assert_raise Docception.Error, fn ->
+      capture_io(:stderr, fn -> Docception.docception([file_as_beam]) end)
+    end
+  end
+
   defp failing_test_file do
     {:ok, io} =
       StringIO.open("""
       This is a test file. It contains a failing test:
 
-      iex> :failing_test
-      true
+        iex> :failing_test
+        true
 
       """)
 

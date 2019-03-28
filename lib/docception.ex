@@ -79,7 +79,8 @@ defmodule Docception do
     {module, byte_code}
   end
 
-  defp docception(files_as_beams) do
+  @doc false
+  def docception(files_as_beams) do
     {:ok, tmp_dir} = Temp.path("docception")
 
     File.mkdir(tmp_dir)
@@ -91,6 +92,8 @@ defmodule Docception do
 
       if Enum.any?(results, &(&1 != :normal)) do
         raise Error, "Failed tests found"
+      else
+        :ok
       end
     after
       File.rm_rf(tmp_dir)
@@ -120,10 +123,7 @@ defmodule Docception do
 
       receive do
         {:DOWN, ^ref, :process, ^pid, reason} ->
-          case reason do
-            :normal -> :ok
-            _ -> :unnormal
-          end
+          reason
       end
     end)
   end
