@@ -16,6 +16,8 @@ defmodule Docception.MixProject do
   end
 
   defp deps do
-    [ ]
+    [
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
+    ]
   end
 end
