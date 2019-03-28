@@ -50,6 +50,7 @@ The following example works:
 * [ ] Check if this also works when a doctest refers to dependencies of the project
 * [ ] Document how to use it with an alias in order to simplify running it in CI
 * [ ] Check if anybody is actually interested in this
+* [ ] Publish
 
 ## How..?
 
