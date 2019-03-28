@@ -9,8 +9,6 @@ defmodule Docception do
 
   alias ExUnit.DocTest
 
-  @tmp_dir "/tmp/docception"
-
   @doc """
   Main entry point.
 
@@ -76,21 +74,28 @@ defmodule Docception do
   end
 
   defp docception(files_as_beams) do
-    File.mkdir(@tmp_dir)
-    @tmp_dir |> String.to_charlist() |> :code.add_patha()
+    {:ok, tmp_dir} = Temp.path("docception")
 
-    results = Enum.flat_map(files_as_beams, &eval_module/1)
+    File.mkdir(tmp_dir)
 
-    if Enum.any?(results, &(&1 != :normal)) do
-      raise Error, "Failed tests found"
+    try do
+      tmp_dir |> String.to_charlist() |> :code.add_patha()
+
+      results = Enum.flat_map(files_as_beams, &eval_module(&1, tmp_dir))
+
+      if Enum.any?(results, &(&1 != :normal)) do
+        raise Error, "Failed tests found"
+      end
+    after
+      File.rm_rf(tmp_dir)
     end
   end
 
-  defp eval_module({module, byte_code}) do
+  defp eval_module({module, byte_code}, tmp_dir) do
     # Note that the .beam extension is added by :code.load_abs/1
     # See https://stackoverflow.com/a/42512734; we need to write a file to retrieve the
     # docs.
-    tmp_beam = Path.join(@tmp_dir, Atom.to_string(module) <> ".beam")
+    tmp_beam = Path.join(tmp_dir, Atom.to_string(module) <> ".beam")
 
     File.write!(tmp_beam, byte_code)
     # Ensure that we start with a clean state

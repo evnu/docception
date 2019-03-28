@@ -43,8 +43,8 @@ The following example works:
 
 ## TODOs
 
-* [ ] Clean up temporary directory where `.beam` files are stored
-* [ ] Do not hard-code the temporary directory
+* [x] Clean up temporary directory where `.beam` files are stored
+* [x] Do not hard-code the temporary directory
 * [ ] Fix "wrong indent" warnings for heredocs
 * [ ] Try to fix wrong line number reports (the offset is always the same!)
 * [ ] Check if this also works when a doctest refers to dependencies of the project
