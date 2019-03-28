@@ -69,7 +69,9 @@ workflows:
   verify:
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
       - credo:
           requires:
             - build
