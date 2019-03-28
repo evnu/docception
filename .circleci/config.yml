@@ -37,6 +37,7 @@ jobs:
       - checkout
       - run: mix local.hex --force
       - run: mix local.rebar --force
+      - run: mix deps.get
       - restore_cache:
           keys:
             - docception-{{ checksum "mix.lock" }}
@@ -48,6 +49,7 @@ jobs:
       - checkout
       - run: mix local.hex --force
       - run: mix local.rebar --force
+      - run: mix deps.get
       - restore_cache:
           keys:
             - docception-{{ checksum "mix.lock" }}
