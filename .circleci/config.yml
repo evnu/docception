@@ -1,0 +1,58 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/elixir:1.8
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+      - restore_cache:
+          keys:
+            - docception
+      - run: mix deps.get
+      - save_cache:
+          key: docception
+          paths:
+            - _build
+            - deps
+            - ~/.mix
+  credo:
+    docker:
+      - image: circleci/elixir:1.8
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+      - restore_cache:
+          keys:
+            - docception
+      - run: mix credo --strict
+  dialyzer:
+    docker:
+      - image: circleci/elixir:1.8
+    steps:
+      - checkout
+      - run: mix local.hex --force
+      - run: mix local.rebar --force
+      - restore_cache:
+          keys:
+            - docception
+            - v1-plt-cache-{{ checksum "mix.lock" }}
+      - run: mix dialyzer
+      - save_cache:
+          key: v1-plt-cache-{{ checksum "mix.lock" }}
+          paths:
+            - _build
+
+workflows:
+  version: 2
+  verify:
+    jobs:
+      - build
+      - credo:
+          requires:
+            - build
+      - dialyzer:
+          requires:
+            - build

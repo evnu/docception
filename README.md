@@ -1,5 +1,7 @@
 # Docception
 
+[![CircleCI](https://circleci.com/gh/evnu/docception.svg?style=svg)](https://circleci.com/gh/evnu/docception)
+
 Run doctests on arbitrary markdown files.
 
 ## Usage
