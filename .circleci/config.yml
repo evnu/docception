@@ -29,7 +29,7 @@ jobs:
             - docception
       - run: mix deps.get
       - run: mix test
-      - run: mix docception README.md
+      - run: ./test.sh
       - save_cache:
           key: docception
           paths:
