@@ -1,0 +1,4 @@
+:0: Unknown function 'Elixir.ExUnit':start/0
+:0: Unknown function 'Elixir.ExUnit.DocTest':'__doctests__'/2
+:0: Unknown function 'Elixir.Mix':raise/1
+lib/mix/tasks/docception.ex:1: Callback info about the 'Elixir.Mix.Task' behaviour is not available
