@@ -68,7 +68,13 @@ defmodule Docception do
     end
     )
 
+    compiler_options = Code.compiler_options()
+
+    Code.compiler_options(ignore_module_conflict: true)
+
     [{module, byte_code}] = Code.compile_string(wrapped)
+
+    Code.compiler_options(compiler_options)
 
     {module, byte_code}
   end
