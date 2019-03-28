@@ -29,6 +29,7 @@ jobs:
       - restore_cache:
           keys:
             - docception-{{ checksum "mix.lock" }}
+      - run: mix deps.get
       - run: mix test
       - run: ./test.sh
   credo:
@@ -41,6 +42,7 @@ jobs:
       - restore_cache:
           keys:
             - docception-{{ checksum "mix.lock" }}
+      - run: mix deps.get
       - run: mix credo --strict
   dialyzer:
     docker:
@@ -49,11 +51,11 @@ jobs:
       - checkout
       - run: mix local.hex --force
       - run: mix local.rebar --force
-      - run: mix deps.get
       - restore_cache:
           keys:
             - docception-{{ checksum "mix.lock" }}
             - v1-plt-cache-{{ checksum "mix.lock" }}
+      - run: mix deps.get
       - run: mix dialyzer --halt-exit-status
       - save_cache:
           key: v1-plt-cache-{{ checksum "mix.lock" }}
