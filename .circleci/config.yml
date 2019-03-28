@@ -11,6 +11,8 @@ jobs:
           keys:
             - docception-{{ checksum "mix.lock" }}
       - run: mix deps.get
+      - run: mix compile
+      - run: MIX_ENV=test mix compile
       - save_cache:
           key: docception-{{ checksum "mix.lock" }}
           paths:
@@ -27,7 +29,6 @@ jobs:
       - restore_cache:
           keys:
             - docception-{{ checksum "mix.lock" }}
-      - run: mix deps.get
       - run: mix test
       - run: ./test.sh
   credo:
@@ -37,7 +38,6 @@ jobs:
       - checkout
       - run: mix local.hex --force
       - run: mix local.rebar --force
-      - run: mix deps.get
       - restore_cache:
           keys:
             - docception-{{ checksum "mix.lock" }}
