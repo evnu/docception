@@ -9,10 +9,10 @@ jobs:
       - run: mix local.rebar --force
       - restore_cache:
           keys:
-            - docception
+            - docception-{{ checksum "mix.lock" }}
       - run: mix deps.get
       - save_cache:
-          key: docception
+          key: docception-{{ checksum "mix.lock" }}
           paths:
             - _build
             - deps
@@ -26,16 +26,10 @@ jobs:
       - run: mix local.rebar --force
       - restore_cache:
           keys:
-            - docception
+            - docception-{{ checksum "mix.lock" }}
       - run: mix deps.get
       - run: mix test
       - run: ./test.sh
-      - save_cache:
-          key: docception
-          paths:
-            - _build
-            - deps
-            - ~/.mix
   credo:
     docker:
       - image: circleci/elixir:1.8
@@ -45,7 +39,7 @@ jobs:
       - run: mix local.rebar --force
       - restore_cache:
           keys:
-            - docception
+            - docception-{{ checksum "mix.lock" }}
       - run: mix credo --strict
   dialyzer:
     docker:
@@ -56,7 +50,7 @@ jobs:
       - run: mix local.rebar --force
       - restore_cache:
           keys:
-            - docception
+            - docception-{{ checksum "mix.lock" }}
             - v1-plt-cache-{{ checksum "mix.lock" }}
       - run: mix dialyzer
       - save_cache:
