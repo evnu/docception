@@ -13,6 +13,8 @@ defmodule Mix.Tasks.Docception do
   @shortdoc "Run doctests on arbitrary markdown files"
 
   def run(files) do
+    ExUnit.start()
+
     Docception.run(files)
   rescue
     e in Docception.Error -> Mix.raise("Docception: #{e.message}")

@@ -45,12 +45,21 @@ defmodule Docception do
 
   # Transform a file into an Elixir module
   defp file_as_beam!(file) do
-    escaped =
-      file
-      |> File.read!()
-      |> String.replace(~S("""), ~S(\"""))
-
     name = Path.basename(file)
+
+    file
+    |> File.stream!()
+    |> stream_as_beam(name)
+  end
+
+  @doc false
+  def stream_as_beam(stream, name) do
+    if stream.line_or_bytes != :line do
+      raise Error, "internal error: expect stream to be line-wise"
+    end
+
+    escaped = Enum.map(stream, &String.replace(&1, ~S("""), ~S(\""")))
+
     module = Module.concat(Docception, String.to_atom(name))
 
     wrapped = ~s(
@@ -67,8 +76,6 @@ defmodule Docception do
   end
 
   defp docception(files_as_beams) do
-    ExUnit.start()
-
     File.mkdir(@tmp_dir)
     @tmp_dir |> String.to_charlist() |> :code.add_patha()
 
