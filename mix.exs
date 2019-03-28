@@ -17,7 +17,8 @@ defmodule Docception.MixProject do
 
   defp deps do
     [
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.5", only: [:dev], runtime: false}
     ]
   end
 end
