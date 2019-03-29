@@ -1,3 +1,9 @@
+# 0.2.1
+
+* Output which file is currently being checked
+* Fix dialyzer warning
+* Document output in test
+
 # 0.2.0
 
 * Generate forms directly instead of wrapping in `@moduledoc`
