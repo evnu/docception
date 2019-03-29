@@ -19,6 +19,11 @@ defmodule Mix.Tasks.Docception do
 
     Docception.run(files, verbose?)
   rescue
-    e in Docception.Error -> Mix.raise("Docception: #{e.message}")
+    e in Docception.Error ->
+      # Try to give the group_leader some time to write the message
+      sleep = 1000
+      IO.puts("Docception: Giving the group_leader #{sleep} ms to write")
+      Process.sleep(sleep)
+      Mix.raise("Docception: #{e.message}")
   end
 end
