@@ -8,6 +8,8 @@ Run doctests on arbitrary markdown files.
 
     $ mix docception files
 
+See the `example/` project on how to use an alias in `mix.exs` to run Docception with `mix test`.
+
 ## Disclaimer
 
 This tool executes any Elixir doctest it encounters (think `eval`). Ensure that it does not
@@ -43,7 +45,7 @@ The following example works:
 * [x] Fix "wrong indent" warnings for heredocs
 * [x] Try to fix wrong line number reports (the offset is always the same!)
 * [ ] Check if this also works when a doctest refers to dependencies of the project
-* [ ] Document how to use it with an alias in order to simplify running it in CI
+* [x] Document how to use it with an alias in order to simplify running it in CI
 * [ ] Check if anybody is actually interested in this
 * [ ] Publish
 

@@ -32,6 +32,7 @@ jobs:
       - run: mix deps.get
       - run: mix test
       - run: ./test.sh
+      - run: example/test.sh
   credo:
     docker:
       - image: circleci/elixir:1.8
