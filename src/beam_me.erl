@@ -11,7 +11,7 @@
 string_to_beam(ModuleName, String)
   when is_atom(ModuleName),
        is_binary(String) ->
-    Line = 0,
+    Line = erl_anno:new(1),
     Forms = [
              {attribute, Line, module, ModuleName},
              %% __info__/1 must be available!
@@ -31,24 +31,24 @@ string_to_beam(ModuleName, String)
              %%    107> "'__info__'(compile) -> [{source, \"docception\"} | module_info(compile)];\n"
              %%    107> "'__info__'(Arg) -> module_info(Arg).".
              %%    108> erl_parse:parse_form(element(2, erl_scan:string(Form))).
-             {attribute,1,export,[{'__info__',1}]}, % 1)
-             {function,1,'__info__',1,              % 2)
-              [{clause,1,
-                [{atom,1,compile}],
+             {attribute,Line,export,[{'__info__',Line}]}, % 1)
+             {function,Line,'__info__',Line,              % 2)
+              [{clause,Line,
+                [{atom,Line,compile}],
                 [],
-                [{cons,1,
-                  {tuple,1,[{atom,1,source},{string,1,"docception"}]},
-                  {call,1,{atom,1,module_info},[{atom,1,compile}]}}]},
-               {clause,1,
-                [{var,1,'Arg'}],
+                [{cons,Line,
+                  {tuple,Line,[{atom,Line,source},{string,Line,"docception"}]},
+                  {call,Line,{atom,Line,module_info},[{atom,Line,compile}]}}]},
+               {clause,Line,
+                [{var,Line,'Arg'}],
                 [],
-                [{call,1,{atom,1,module_info},[{var,1,'Arg'}]}]}]}
+                [{call,Line,{atom,Line,module_info},[{var,Line,'Arg'}]}]}]}
             ],
     DocsChunk =
         term_to_binary(
           {
               docs_v1,
-              erl_anno:new(Line),
+              Line,
               elixir,
               <<"text/markdown">>,
               #{<<"en">> => String},
