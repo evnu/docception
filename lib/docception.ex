@@ -16,7 +16,7 @@ defmodule Docception do
 
   This function raises `Docception.Error` on errors.
   """
-  def run(files) when is_list(files) do
+  def run(files, verbose?) when is_list(files) do
     if Enum.empty?(files) do
       raise Docception.Error, "No files to check"
     end
@@ -24,7 +24,7 @@ defmodule Docception do
     files
     |> check_files_exist!()
     |> files_as_beams!()
-    |> docception()
+    |> docception(verbose?)
   end
 
   defp check_files_exist!(files) do
@@ -66,11 +66,11 @@ defmodule Docception do
 
     {:ok, binary} = :beam_me.string_to_beam(module, escaped)
 
-    {module, binary}
+    {name, module, binary}
   end
 
   @doc false
-  def docception(files_as_beams) do
+  def docception(files_as_beams, verbose?) do
     {:ok, tmp_dir} = Temp.path("docception")
 
     File.mkdir(tmp_dir)
@@ -78,7 +78,7 @@ defmodule Docception do
     try do
       tmp_dir |> String.to_charlist() |> :code.add_patha()
 
-      results = Enum.flat_map(files_as_beams, &eval_module(&1, tmp_dir))
+      results = Enum.flat_map(files_as_beams, &eval_module(&1, tmp_dir, verbose?))
 
       if Enum.any?(results, &(&1 != :normal)) do
         raise Error, "Failed tests found"
@@ -90,7 +90,11 @@ defmodule Docception do
     end
   end
 
-  defp eval_module({module, byte_code}, tmp_dir) do
+  defp eval_module({name, module, byte_code}, tmp_dir, verbose?) do
+    if verbose? do
+      IO.puts("Docception: #{name}")
+    end
+
     tmp_beam = Path.join(tmp_dir, Atom.to_string(module) <> ".beam")
 
     # Code.fetch_docs/1 requires the beam to be present in the file system

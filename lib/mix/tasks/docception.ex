@@ -15,7 +15,9 @@ defmodule Mix.Tasks.Docception do
   def run(files) do
     ExUnit.start()
 
-    Docception.run(files)
+    verbose? = true
+
+    Docception.run(files, verbose?)
   rescue
     e in Docception.Error -> Mix.raise("Docception: #{e.message}")
   end

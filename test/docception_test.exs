@@ -5,21 +5,21 @@ defmodule DocceptionTest do
 
   test "raises if no files present" do
     assert_raise Docception.Error, fn ->
-      Docception.run([])
+      Docception.run([], false)
     end
   end
 
   test "raises if file does not exist" do
     assert_raise Docception.Error, fn ->
-      Docception.run(["doesnotexist"])
+      Docception.run(["doesnotexist"], false)
     end
   end
 
   test "converts test files into beam" do
-    assert {:"Elixir.Docception.testfile", _beam} =
+    assert {"testfile", :"Elixir.Docception.testfile", _beam} =
              failing_test_file() |> Docception.stream_as_beam("testfile")
 
-    assert {:"Elixir.Docception.testfile", _beam} =
+    assert {"testfile", :"Elixir.Docception.testfile", _beam} =
              succeeding_test_file() |> Docception.stream_as_beam("testfile")
 
     assert_raise Docception.Error, fn ->
@@ -31,14 +31,14 @@ defmodule DocceptionTest do
   test "does not fail on correct test" do
     file_as_beam = succeeding_test_file() |> Docception.stream_as_beam("testfile")
 
-    assert :ok == Docception.docception([file_as_beam])
+    assert :ok == Docception.docception([file_as_beam], false)
   end
 
   test "finds a failing test" do
     file_as_beam = failing_test_file() |> Docception.stream_as_beam("testfile")
 
     assert_raise Docception.Error, fn ->
-      capture_io(:stderr, fn -> Docception.docception([file_as_beam]) end)
+      capture_io(:stderr, fn -> Docception.docception([file_as_beam], false) end)
     end
   end
 
