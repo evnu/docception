@@ -43,15 +43,15 @@ defmodule Docception do
 
   # Transform a file into an Elixir module
   defp file_as_beam!(file) do
-    name = Path.basename(file)
+    file_name = Path.basename(file)
 
     file
     |> File.stream!()
-    |> stream_as_beam(name)
+    |> stream_as_beam(file_name, file)
   end
 
   @doc false
-  def stream_as_beam(stream, name) do
+  def stream_as_beam(stream, file_name, file) do
     if stream.line_or_bytes != :line do
       raise Error, "internal error: expect stream to be line-wise"
     end
@@ -62,11 +62,11 @@ defmodule Docception do
       |> Stream.map(&String.trim_trailing(&1, "\n"))
       |> Enum.join("\n")
 
-    module = Module.concat(Docception, String.to_atom(name))
+    module = Module.concat(Docception, String.to_atom(file_name))
 
-    {:ok, binary} = :beam_me.string_to_beam(module, escaped)
+    {:ok, binary} = :beam_me.string_to_beam(module, escaped, String.to_charlist(file))
 
-    {name, module, binary}
+    {file_name, module, binary}
   end
 
   @doc false
@@ -90,9 +90,9 @@ defmodule Docception do
     end
   end
 
-  defp eval_module({name, module, byte_code}, tmp_dir, verbose?) do
+  defp eval_module({file_name, module, byte_code}, tmp_dir, verbose?) do
     if verbose? do
-      IO.puts("Docception: #{name}")
+      IO.puts("Docception: #{file_name}")
     end
 
     tmp_beam = Path.join(tmp_dir, Atom.to_string(module) <> ".beam")

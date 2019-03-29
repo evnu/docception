@@ -3,9 +3,10 @@ defmodule BeamMeTest do
 
   test "can convert a string into a beam" do
     random_string = "4"
+    source = "testfile.md"
 
     # build the binary
-    assert {:ok, binary} = :beam_me.string_to_beam(MyModule, random_string)
+    assert {:ok, binary} = :beam_me.string_to_beam(MyModule, random_string, source)
 
     # nothing loaded yet
     assert_raise UndefinedFunctionError, fn ->
@@ -18,7 +19,7 @@ defmodule BeamMeTest do
     # we can call auto-generated functions
     assert MyModule == MyModule.module_info(:module)
     assert MyModule == MyModule.__info__(:module)
-    assert 'docception' == MyModule.__info__(:compile)[:source]
+    assert source == MyModule.__info__(:compile)[:source]
 
     # we have a 'Docs' chunk
     assert {:ok, _, chunks} = :beam_lib.all_chunks(binary)

@@ -1,6 +1,9 @@
 defmodule DocceptionTest do
   use ExUnit.Case
 
+  @source "testfile.md"
+  @file_name "testfile.md"
+
   test "raises if no files present" do
     assert_raise Docception.Error, fn ->
       Docception.run([], false)
@@ -14,26 +17,26 @@ defmodule DocceptionTest do
   end
 
   test "converts test files into beam" do
-    assert {"testfile", :"Elixir.Docception.testfile", _beam} =
-             failing_test_file() |> Docception.stream_as_beam("testfile")
+    assert {@file_name, :"Elixir.Docception.testfile.md", _beam} =
+             failing_test_file() |> Docception.stream_as_beam(@file_name, @source)
 
-    assert {"testfile", :"Elixir.Docception.testfile", _beam} =
-             succeeding_test_file() |> Docception.stream_as_beam("testfile")
+    assert {@file_name, :"Elixir.Docception.testfile.md", _beam} =
+             succeeding_test_file() |> Docception.stream_as_beam(@file_name, @source)
 
     assert_raise Docception.Error, fn ->
       # Expect line-wise stream
-      Docception.stream_as_beam(StringIO.open("") |> IO.stream(10), "testfile")
+      Docception.stream_as_beam(StringIO.open("") |> IO.stream(10), @file_name, @source)
     end
   end
 
   test "does not fail on correct test" do
-    file_as_beam = succeeding_test_file() |> Docception.stream_as_beam("testfile")
+    file_as_beam = succeeding_test_file() |> Docception.stream_as_beam(@file_name, @source)
 
     assert :ok == Docception.docception([file_as_beam], false)
   end
 
   test "finds a failing test" do
-    file_as_beam = failing_test_file() |> Docception.stream_as_beam("testfile")
+    file_as_beam = failing_test_file() |> Docception.stream_as_beam(@file_name, @source)
 
     assert_raise Docception.Error, fn ->
       # This will write to stdout, but can apparently not be captured.
