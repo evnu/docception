@@ -56,27 +56,17 @@ defmodule Docception do
       raise Error, "internal error: expect stream to be line-wise"
     end
 
-    escaped = Enum.map(stream, &String.replace(&1, ~S("""), ~S(\""")))
+    escaped =
+      stream
+      |> Stream.map(&String.trim_leading/1)
+      |> Stream.map(&String.trim_trailing(&1, "\n"))
+      |> Enum.join("\n")
 
     module = Module.concat(Docception, String.to_atom(name))
 
-    wrapped = ~s(
-    defmodule #{inspect(module)} do
-      @moduledoc """
-      #{escaped}
-      """
-    end
-    )
+    {:ok, binary} = :beam_me.string_to_beam(module, escaped)
 
-    compiler_options = Code.compiler_options()
-
-    Code.compiler_options(ignore_module_conflict: true)
-
-    [{module, byte_code}] = Code.compile_string(wrapped)
-
-    Code.compiler_options(compiler_options)
-
-    {module, byte_code}
+    {module, binary}
   end
 
   @doc false
@@ -101,14 +91,10 @@ defmodule Docception do
   end
 
   defp eval_module({module, byte_code}, tmp_dir) do
-    # Note that the .beam extension is added by :code.load_abs/1
-    # See https://stackoverflow.com/a/42512734; we need to write a file to retrieve the
-    # docs.
     tmp_beam = Path.join(tmp_dir, Atom.to_string(module) <> ".beam")
 
+    # Code.fetch_docs/1 requires the beam to be present in the file system
     File.write!(tmp_beam, byte_code)
-    # Ensure that we start with a clean state
-    :code.purge(module)
 
     module
     |> DocTest.__doctests__([])
