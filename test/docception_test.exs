@@ -1,8 +1,6 @@
 defmodule DocceptionTest do
   use ExUnit.Case
 
-  import ExUnit.CaptureIO
-
   test "raises if no files present" do
     assert_raise Docception.Error, fn ->
       Docception.run([], false)
@@ -38,7 +36,9 @@ defmodule DocceptionTest do
     file_as_beam = failing_test_file() |> Docception.stream_as_beam("testfile")
 
     assert_raise Docception.Error, fn ->
-      capture_io(:stderr, fn -> Docception.docception([file_as_beam], false) end)
+      # This will write to stdout, but can apparently not be captured.
+      # Possibly because of a sub-process with another group leader.
+      Docception.docception([file_as_beam], false)
     end
   end
 
