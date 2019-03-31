@@ -104,12 +104,10 @@ defmodule Docception do
     |> DocTest.__doctests__([])
     |> Enum.map(fn {_name, test} ->
       # Spawn a process and wait for it to die.
-      pid =
-        spawn(fn ->
+      {pid, ref} =
+        spawn_monitor(fn ->
           Code.compile_quoted(test, file_name)
         end)
-
-      ref = Process.monitor(pid)
 
       receive do
         {:DOWN, ^ref, :process, ^pid, reason} ->
