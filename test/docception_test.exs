@@ -39,8 +39,8 @@ defmodule DocceptionTest do
     file_as_beam = failing_test_file() |> Docception.stream_as_beam(@file_name, @source)
 
     assert_raise Docception.Error, fn ->
-      # This will write to stdout, but can apparently not be captured.
-      # Possibly because of a sub-process with another group leader.
+      # This will write to stdout, but can apparently not be captured
+      # (sub-processes are in the mix).
       Docception.docception([file_as_beam], false)
     end
   end
@@ -49,8 +49,8 @@ defmodule DocceptionTest do
     file_as_beam = file_with_syntax_error() |> Docception.stream_as_beam(@file_name, @source)
 
     assert_raise Docception.Error, fn ->
-      # This will write to stdout, but can apparently not be captured.
-      # Possibly because of a sub-process with another group leader.
+      # This will write to stdout, but can apparently not be captured
+      # (sub-processes are in the mix).
       Docception.docception([file_as_beam], false)
     end
   end
