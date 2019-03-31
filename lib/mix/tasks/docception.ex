@@ -24,10 +24,9 @@ defmodule Mix.Tasks.Docception do
     Docception.run(files, verbose?)
   rescue
     e in Docception.Error ->
-      # Try to give the group_leader some time to write the message
-      sleep = 1000
-      IO.puts("Docception: Giving the group_leader #{sleep} ms to write")
-      Process.sleep(sleep)
       Mix.raise("Docception: #{e.message}")
+  after
+    # Stop ExUnit manually in order to try to let it write the error messages.
+    Application.stop(:ex_unit)
   end
 end
