@@ -60,6 +60,12 @@ The following example works:
 * [x] Publish
 * [ ] Determine how to ensure that errors are written before the task ends; drop `Process.sleep`
       in mix task.
+
+      The root cause of this is `ExUnit.CLIFormatter`. The formatter writes the error message.
+      Docception can possibly exit before the formatter is done writing. This could be solvable
+      by using a wrapper around `ExUnit.CLIFormatter` as a custom formatter instead. This custom
+      formatter would then be shut down manually. Alas, I did not find a way to inject such a
+      custom formatter.
 * [ ] Check if anybody is actually interested in this
 
 ## How..?
