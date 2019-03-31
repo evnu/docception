@@ -1,5 +1,6 @@
 # 0.3.4
 
+* Ensure that modules and functions from the parent project are available in doctests
 * Better handling of location of syntax errors
 
 # 0.3.1-0.3.3

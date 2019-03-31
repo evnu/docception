@@ -22,3 +22,8 @@ The output should be similar to this:
     right: false
 
     README.md:8: :"Elixir.Docception.README.md" (module)
+
+The tests can also use functions from modules defined in the application:
+
+    iex> Example.hello()
+    :world

@@ -13,6 +13,10 @@ defmodule Mix.Tasks.Docception do
   @shortdoc "Run doctests on arbitrary markdown files"
 
   def run(files) do
+    # Compile first to ensure that all dependencies and parent project's module are available in
+    # doctests.
+    Mix.Task.run "compile"
+
     ExUnit.start()
 
     verbose? = true
