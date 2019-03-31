@@ -14,6 +14,10 @@ defmodule Docception.MixProject do
       dialyzer: [
         ignore_warnings: "dialyzer.ignore-warnings",
         list_unused_filters: true
+      ],
+      docs: [
+        main: "readme",
+        extras: ["README.md"]
       ]
     ]
   end

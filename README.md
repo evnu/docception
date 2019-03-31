@@ -1,14 +1,25 @@
 # Docception
 
+[![Hex](https://img.shields.io/hexpm/v/docception.svg)](https://hex.pm/packages/docception)
 [![CircleCI](https://circleci.com/gh/evnu/docception.svg?style=svg)](https://circleci.com/gh/evnu/docception)
 
 Run doctests on arbitrary markdown files.
 
 ## Usage
 
-    $ mix docception files
+    $ mix docception markdown-files
 
 See the `example/` project on how to use an alias in `mix.exs` to run Docception with `mix test`.
+
+## Installation
+
+```elixir
+def deps do
+  [
+    {:docception, "~> 0.3.2", runtime: false}
+  ]
+end
+```
 
 ## Disclaimer
 
