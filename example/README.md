@@ -7,6 +7,11 @@ executed and output written to stdout:
     iex> true
     false
 
+Docctest is able to detect multiple erroneous tests. The following is detected as well:
+
+    iex> false
+    true
+
 The output should be similar to this:
 
     $ mix test
