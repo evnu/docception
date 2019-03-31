@@ -1,3 +1,7 @@
+# 0.3.1-0.3.3
+
+* Publish `docception` hex package
+
 # 0.3.0
 
 * Example project to showcase Docception
