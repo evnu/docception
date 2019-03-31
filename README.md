@@ -55,10 +55,12 @@ The following example works:
 * [x] Do not hard-code the temporary directory
 * [x] Fix "wrong indent" warnings for heredocs
 * [x] Try to fix wrong line number reports (the offset is always the same!)
-* [ ] Check if this also works when a doctest refers to dependencies of the project
+* [x] Check if this also works when a doctest refers to dependencies of the project
 * [x] Document how to use it with an alias in order to simplify running it in CI
-* [ ] Check if anybody is actually interested in this
 * [x] Publish
+* [ ] Determine how to ensure that errors are written before the task ends; drop `Process.sleep`
+      in mix task.
+* [ ] Check if anybody is actually interested in this
 
 ## How..?
 
