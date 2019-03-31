@@ -42,7 +42,8 @@ defmodule Docception.MixProject do
   defp package do
     [
       licenses: ["Apache 2.0"],
-      links: %{"Github" => "https://github.com/evnu/docception"}
+      links: %{"Github" => "https://github.com/evnu/docception"},
+      maintainers: ["evnu"]
     ]
   end
 end
