@@ -45,6 +45,16 @@ defmodule DocceptionTest do
     end
   end
 
+  test "can pin-point a compile error" do
+    file_as_beam = file_with_syntax_error() |> Docception.stream_as_beam(@file_name, @source)
+
+    assert_raise Docception.Error, fn ->
+      # This will write to stdout, but can apparently not be captured.
+      # Possibly because of a sub-process with another group leader.
+      Docception.docception([file_as_beam], false)
+    end
+  end
+
   defp failing_test_file do
     {:ok, io} =
       StringIO.open("""
@@ -66,6 +76,17 @@ defmodule DocceptionTest do
         iex> true
         true
 
+      """)
+
+    IO.stream(io, :line)
+  end
+
+  defp file_with_syntax_error do
+    {:ok, io} =
+      StringIO.open("""
+      There is a syntax error below:
+        iex> 12896dlkh
+        :error
       """)
 
     IO.stream(io, :line)

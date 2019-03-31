@@ -1,3 +1,7 @@
+# 0.3.4
+
+* Better handling of location of syntax errors
+
 # 0.3.1-0.3.3
 
 * Publish `docception` hex package

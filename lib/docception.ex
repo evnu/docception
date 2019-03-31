@@ -106,7 +106,7 @@ defmodule Docception do
       # Spawn a process and wait for it to die.
       pid =
         spawn(fn ->
-          Code.compile_quoted(test)
+          Code.compile_quoted(test, file_name)
         end)
 
       ref = Process.monitor(pid)
