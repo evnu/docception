@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Docception do
 
   # Usage
 
-      mix docception files
+      mix docception markdown-files
 
   """
 
