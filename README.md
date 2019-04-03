@@ -1,7 +1,8 @@
 # Docception
 
 [![Hex](https://img.shields.io/hexpm/v/docception.svg)](https://hex.pm/packages/docception)
-[![CircleCI](https://circleci.com/gh/evnu/docception.svg?style=svg)](https://circleci.com/gh/evnu/docception)
+[![CircleCI](https://img.shields.io/circleci/project/github/evnu/docception/master.svg)](https://circleci.com/gh/evnu/docception)
+![License](https://img.shields.io/hexpm/l/docception.svg)
 
 Run doctests on arbitrary markdown files.
 
