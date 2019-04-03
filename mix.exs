@@ -13,7 +13,8 @@ defmodule Docception.MixProject do
       deps: deps(),
       dialyzer: [
         ignore_warnings: "dialyzer.ignore-warnings",
-        list_unused_filters: true
+        list_unused_filters: true,
+        plt_add_apps: [:ex_unit, :mix]
       ],
       docs: [
         main: "readme",
