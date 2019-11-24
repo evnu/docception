@@ -17,7 +17,7 @@ See the `example/` project on how to use an alias in `mix.exs` to run Docception
 ```elixir
 def deps do
   [
-    {:docception, "~> 0.3.3", runtime: false}
+    {:docception, "~> 0.3", runtime: false}
   ]
 end
 ```
