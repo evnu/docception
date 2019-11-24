@@ -1,3 +1,7 @@
+# 0.3.5
+
+* Fix ExUnit failure on shutdown (#2)
+
 # 0.3.4
 
 * Ensure that modules and functions from the parent project are available in doctests
