@@ -59,7 +59,7 @@ The following example works:
 * [x] Check if this also works when a doctest refers to dependencies of the project
 * [x] Document how to use it with an alias in order to simplify running it in CI
 * [x] Publish
-* [ ] Determine how to ensure that errors are written before the task ends; avoid stopping `ex_unit`
+* [ ] Determine how to ensure that errors are written before the task ends; avoid sleeping
       in mix task.
 
       The root cause of this is `ExUnit.CLIFormatter`. The formatter writes the error message.
