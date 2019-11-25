@@ -21,14 +21,13 @@ defmodule Mix.Tasks.Docception do
 
     verbose? = true
 
-    Docception.run(files, verbose?)
-
     System.at_exit(fn
       0 -> :ok
       _ ->
-        # Stop ExUnit manually in order to try to let it write the error messages.
-        Application.stop(:ex_unit)
+        Process.sleep(1_000)
     end)
+
+    Docception.run(files, verbose?)
   rescue
     e in Docception.Error ->
       Mix.raise("Docception: #{e.message}")
