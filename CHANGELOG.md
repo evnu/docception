@@ -1,3 +1,7 @@
+# 0.3.6
+
+* Attempt to make writing output more reliable (#7)
+
 # 0.3.5
 
 * Fix ExUnit failure on shutdown (#2)
