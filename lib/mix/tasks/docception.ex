@@ -17,7 +17,7 @@ defmodule Mix.Tasks.Docception do
     # doctests.
     Mix.Task.run "compile"
 
-    ExUnit.start()
+    ExUnit.start(formatters: [])
 
     verbose? = true
 

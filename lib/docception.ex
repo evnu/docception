@@ -83,6 +83,9 @@ defmodule Docception do
       if Enum.any?(results, &(&1 != :normal)) do
         raise Error, "Failed tests found"
       else
+        message = "#{length(results)} doctests passed"
+        IO.puts(IO.ANSI.format_fragment([:green, to_charlist(message)]))
+
         :ok
       end
     after
