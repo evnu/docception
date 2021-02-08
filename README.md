@@ -67,7 +67,7 @@ The following example works:
       by using a wrapper around `ExUnit.CLIFormatter` as a custom formatter instead. This custom
       formatter would then be shut down manually. Alas, I did not find a way to inject such a
       custom formatter.
-* [ ] Check if anybody is actually interested in this
+* [x] Check if anybody is actually interested in this
 
 ## How..?
 
