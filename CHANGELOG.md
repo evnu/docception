@@ -1,3 +1,7 @@
+# 0.4.0
+
+* Improve output in successful case (#9, thanks to @axelson)
+
 # 0.3.6
 
 * Attempt to make writing output more reliable (#7)
