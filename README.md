@@ -6,6 +6,25 @@
 
 Run doctests on arbitrary markdown files.
 
+## DEPRECATION NOTICE
+
+As of Elixir 1.15, this dependency can be replaced by using the
+[doctest_file/1,2](https://hexdocs.pm/ex_unit/1.15/ExUnit.DocTest.html#doctest_file/2) macro
+provided by ExUnit itself, see #11 (thanks @axelson for pointing this out). To use this
+on a range of files, you can create a simple test module in your `test/` directory:
+
+```elixir
+defmodule DocTest do
+  use ExUnit.Case
+  # You could also use a wildcard below
+  for file <- ["README.md"] do
+    doctest_file(file)
+  end
+end
+```
+
+---
+
 ## Usage
 
     $ mix docception markdown-files
